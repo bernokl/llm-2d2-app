@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: diagrammer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: diagrammer
+  template:
+    metadata:
+      labels:
+        app: diagrammer
+    spec:
+      containers:
+      - name: diagrammer-container
+        image: bernokl/diagrammer:latest-7
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-api-key
+              key: OPENAI_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: diagrammer-service
+spec:
+  selector:
+    app: diagrammer
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

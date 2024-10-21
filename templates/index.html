@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DiagrammerGPT</title>
+</head>
+<body>
+    <h1>DiagrammerGPT</h1>
+    <form method="post">
+        <label for="description">Enter infrastructure description:</label><br>
+        <textarea id="description" name="description" rows="10" cols="80">{{ request.form.description }}</textarea><br><br>
+        <input type="submit" value="Generate D2">
+    </form>
+
+    {% if d2_code %}
+        <h2>Generated D2 Code:</h2>
+        <pre>{{ d2_code }}</pre>
+    {% endif %}
+
+    {% if image_path %}
+        <h2>Rendered Diagram:</h2>
+        <img src="{{ url_for('static', filename='diagram.svg') }}" alt="Diagram" style="width: 95%;">
+
+
+    {% endif %}
+</body>
+</html>
+
